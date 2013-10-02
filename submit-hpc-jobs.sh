@@ -17,7 +17,15 @@ function submit_single_end_read_jobs # workdir
         for start in $(seq 0 $number $total);  
         do
             logfile=$(echo $f |sed 's|reads|reads/log/|; s/.fastq//;')-$start-$number.log;
-            [ ! -f $logfile ] && echo qsub -o $logdir -e $logdir -v readfile="$f",start=$start,number=$number  $PWD/work/script/run-rmapbs.qsub && qsub -o $logdir -e $logdir -v readfile="$f",start=$start,number=$number  $PWD/work/script/run-rmapbs.qsub &&    sleep  5 && numJobs=$(echo $numJobs + 1 | bc);   
+            [ ! -f $logfile ] \
+				&& echo qsub -o $logdir -e $logdir \
+    			     -v readfile="$f",start=$start,number=$number \
+	    		     $PWD/work/script/run-rmapbs.qsub \
+				&& qsub -o $logdir -e $logdir \
+				     -v readfile="$f",start=$start,number=$number\
+                     $PWD/work/script/run-rmapbs.qsub \
+				&& numJobs=$(echo $numJobs + 1 | bc) \
+				&& sleep  5;   
             
             if [ $numJobs -ge $maxJobs ];
             then       
@@ -50,7 +58,15 @@ function submit_paired_end_read_jobs # workdir
         for start in $(seq 0 $number $total)  
         do
             logfile=$(echo $readTrichFile |sed 's|reads|reads/log/|; s/_1.fastq//;')-$start-$number.log;
-            [ ! -f $logfile ] && echo qsub -o $logdir -e $logdir -v readTrichFile="$readTrichFile",readArichFile="$readArichFile",start=$start,number=$number $PWD/work/script/run-rmapbs-pe.qsub && qsub -o $logdir -e $logdir -v readTrichFile="$readTrichFile",readArichFile="$readArichFile",start=$start,number=$number $PWD/work/script/run-rmapbs-pe.qsub && sleep 5 && numJobs=$(echo $numJobs + 1 | bc);   
+            [ ! -f $logfile ] \
+				&& echo qsub -o $logdir -e $logdir \
+				  -v readTrichFile="$readTrichFile",readArichFile="$readArichFile",start=$start,number=$number \
+				  $PWD/work/script/run-rmapbs-pe.qsub \
+				&& qsub -o $logdir -e $logdir \
+				   -v readTrichFile="$readTrichFile",readArichFile="$readArichFile",start=$start,number=$number \
+				   $PWD/work/script/run-rmapbs-pe.qsub \
+				&& numJobs=$(echo $numJobs + 1 | bc) \
+				&& sleep 5 ;   
             
             if [ $numJobs -ge $maxJobs ];
             then       
