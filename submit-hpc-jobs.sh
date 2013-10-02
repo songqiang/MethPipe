@@ -39,8 +39,9 @@ function submit_paired_end_read_jobs # workdir
     lc=~qiangson/app/methpipe/trunk/bin/lc_approx;
     logdir=$PWD/work/log;
     number=1000000;
+    username=$(whoami);
     maxJobs=222;
-    numJobs=$(qstat|grep qiangson|wc -l);
+    numJobs=$(qstat|grep $username|wc -l);
     for f in $(find -L $PWD  -name "*_1.fastq");
     do
         readTrichFile=$f
@@ -53,11 +54,11 @@ function submit_paired_end_read_jobs # workdir
             
             if [ $numJobs -ge $maxJobs ];
             then       
-                while [ "$(qstat|grep qiangson|wc -l)" -ge $maxJobs ]; 
+                while [ "$(qstat|grep $username|wc -l)" -ge $maxJobs ]; 
                 do
                     date && sleep 1h; 
                 done
-                numJobs=$(qstat|grep qiangson|wc -l);
+                numJobs=$(qstat|grep $username|wc -l);
             fi
         done
     done
