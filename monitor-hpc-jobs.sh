@@ -36,12 +36,16 @@ function validate_job # readfile, start, number
     fi
 }  
 
-function clean_finished_single_end_jobs # workdir
+function clean_finished_single_end_jobs # workdir number
 {
     workdir=$1;
     cd $workdir;
     lc=~qiangson/app/methpipe/trunk/bin/lc_approx;
     number=1000000;
+	if [ "$#" -eq 2 ];
+	then
+		number=$2;
+	fi
     finished=0;
     todo=0;
     for f in $(find -L $PWD -name "*.fastq");
@@ -71,12 +75,43 @@ function clean_finished_single_end_jobs # workdir
     echo Finished=$finished, TODO=$todo; 
 }
 
+function report_unfinished_single_end_jobs # workdir number
+{
+    workdir=$1;
+    cd $workdir;
+    lc=~qiangson/app/methpipe/trunk/bin/lc_approx;
+	number=1000000;
+	if [ "$#" -eq 2 ];
+	then
+		number=$2;
+	fi
+    finished=0;
+    todo=0;
+    for f in $(find -L $PWD -name "*.fastq");
+    do
+        total=$(echo $($lc -n 10 -z 1000000 $f|cut -f2)/4|bc);
+        failedjobs=0;
+        for start in $(seq 0 $number $total);
+        do
+            validate_job $f $start $number;
+            if [ "$?" -ne 0 ];
+            then
+				echo $f $start $number;
+            fi
+        done
+    done
+}
+
 function clean_finished_paired_end_jobs # workdir
 {
     workdir=$1;
     cd $workdir;
     lc=~qiangson/app/methpipe/trunk/bin/lc_approx;
     number=1000000;
+	if [ "$#" -eq 2 ];
+	then
+		number=$2;
+	fi
     finished=0;
     todo=0;
     for f in $(find $PWD -name "*_1.fastq");
@@ -106,5 +141,35 @@ function clean_finished_paired_end_jobs # workdir
     
     date;
     echo Finished=$finished, TODO=$todo; 
+}
+
+
+function report_unfinished_paired_end_jobs # workdir number
+{
+    workdir=$1;
+    cd $workdir;
+    lc=~qiangson/app/methpipe/trunk/bin/lc_approx;
+    number=1000000;
+	if [ "$#" -eq 2 ];
+	then
+		number=$2;
+	fi
+    finished=0;
+    todo=0;
+    for f in $(find $PWD -name "*_1.fastq");
+    do
+        readTrichFile=$f;
+        readArichFile=${f/_1.fastq/_2.fastq};
+        total=$(echo $($lc -n 10 -z 1000000 $f|cut -f2)/4|bc);
+        failedjobs=0;
+        for start in $(seq 0 $number $total);
+        do
+            validate_job $readTrichFile $readArichFile $start $number;
+            if [ "$?" -ne 0 ];
+            then
+				echo $readTrichFile $readArichFile $start $number;
+            fi
+        done
+    done
 }
 
