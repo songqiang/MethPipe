@@ -1,0 +1,132 @@
+// $ ~/Documents/methylome/code/methpipe/trunk/bin/methcounts 
+// Usage: methcounts [OPTIONS] -c <chroms> <mapped-reads>
+// 
+// Options:
+//   -o, -output       Name of output file (default: stdout) 
+//   -c, -chrom        file or dir of chroms (FASTA format; .fa suffix) 
+//   -N, -non          process non-CpG cytosines 
+//   -M, -max          max mismatches (can be fractional) 
+//   -L, -max_length   The maximal read length of the input file (default 10000) 
+//   -S, -output_stat  Name of output file with statistics 
+//   -A, -alt_out      use alternative output format 
+//   -v, -verbose      print more run info 
+// 
+// Help options:
+//   -?, -help         print this help message 
+//       -about        print about message 
+// 
+// PROGRAM: methcounts
+// Program to count methylated/unmethylated bases in reads mapping over each CpG or C 
+// 
+
+{
+    "$type": "Form",
+    "fields": [
+        {
+            "$type": "TextBox",
+            "size": 400,
+            "minLength": 0,
+            "maxLength": 150,
+            "value": "Example [LocalDateTime]",
+            "label": "Analysis Name",
+            "required": true,
+            "requiredMessage": "Please enter name for your app session.",
+            "id": "app-session-name"
+        },
+        {
+    		"$type": "FileChooser",
+			"id": "mr-file",
+			"label": "Mapped reads file:",
+			"size": 500,
+			"valueType": "Input",
+			"allowedPermissions": "read",
+			"extensionFilters": ".mr",
+			"chooserType": "ByProject",
+			"multiselect": true,
+            "required": true,
+			"requiredMessage": "Please choose a file",
+		},
+        {
+    		"$type": "FileChooser",
+			"id": "genome-file",
+			"label": "Reference genome sequence file:",
+			"size": 500,
+			"valueType": "Input",
+			"allowedPermissions": "read",
+			"extensionFilters": ".fa",
+			"chooserType": "ByProject",
+			"multiselect": true,
+            "required": true,
+			"requiredMessage": "Please choose a file",
+		},
+		{
+			"$type": "Numeric",
+			"id": "max-mismatch",
+			"size": 50, 
+			"required": false,
+			"label": "Max mismatches allowed in reads (can be fractional)",
+			"min": 0, 
+			"max": 100,
+			"value": 6,
+			"numericType": "Integer", 
+		}, 
+		{
+			"$type": "Numeric",
+			"id": "max-read-length",
+			"size": 50, 
+			"required": false,
+			"label": "max read length in input file",
+			"min": 20, 
+			"max": 10000,
+			"value": 10000,
+			"numericType": "Integer", 
+		}, 
+    	{
+			"$type": "RadioButton",
+			"id": "non-CpG",
+			"label": "Process non-CpG sites:",
+			"choices": [
+				{
+					"value": 1
+				}
+			],
+			"togglers": [
+				{
+					"toggleOnValue": 1, 
+					"toggleFields": "name,state" 
+				}    
+			]
+		},
+        {
+            "$type": "ProjectChooser",
+            "size": 300,
+            "valueType": "Output",
+            "allowedPermissions": "owner",
+            "label": "Save Results To",
+            "required": true,
+            "requiredMessage": "Please choose a project",
+            "id": "project-id",
+            "allowResourceCreation": true,
+            "rules": "is-project-owner"
+        },
+        {
+            "$type": "SectionBreak"
+        }
+    ],
+    "rulesets":[
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Read",
+            "severity": "Error",
+            "message": "You do not have read access to the selected sample",
+            "id": "sample-reader"
+        },
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Own",
+            "severity": "Error",
+            "message": "You aren't the owner of the selected project.",
+            "id": "is-project-owner"
+        }
+    ]
+}
