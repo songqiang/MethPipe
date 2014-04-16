@@ -1,15 +1,18 @@
 import os
 import subprocess
 import json
+import sys
 
 class DockerApp:
     def __init__(self):
-        jf = json.load(open("/data/input/AppSession.json"))
+        appconf = "/data/input/AppSession.json" if len(sys.argv) == 1 \
+          else sys.argv[1]
+        jf = json.load(open(appconf))
         properties = jf["Properties"]["Items"]
         properties = dict(zip([p["Name"] for p in properties], properties))
 
         self.InAppResultID = properties["Input.AppResults"]["Items"][0]["Id"]
-        self.methfile = properties["Input.meth-file"]["Content"]["Path"p]
+        self.methfile = properties["Input.meth-file"]["Content"]["Path"]
         self.desertSize = properties["Input.desert-size"]["Content"]
         self.numIter = properties["Input.num-iter"]["Content"]
         self.outProjID = properties["Input.project-id"]["Content"]["Id"]
@@ -18,13 +21,19 @@ class DockerApp:
 
         self.app = "/home/methpipe/methpipe/bin/hmr"
         self.infile = "/data/input/appresults/" + self.InAppResultID \
-          + "/" + self.methpipe
+          + "/" + self.methfile
         self.outfile = "/data/output/appresults/" + self.outProjID \
-          + "/" + self.methpipe.replace(".meth", ".hmr")
+          + "/" + self.methfile.replace(".meth", ".hmr")
           
-    def runApp(self):
-        command_list = [app, "-itr", numIter, "-desert", desertSize, \
-                    computePMD, verbose, "-out", outfile, infile]
+    def run(self):
+        outdir = os.path.dirname(self.outfile)
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
+        command_list = [self.app, "-itr", self.numIter, \
+                        "-desert", self.desertSize, \
+                        self.computePMD, self.verbose, "-out", \
+                        self.outfile, self.infile]
+        print "\t".join(command_list)
         rcode = subprocess.call( command_list )
         if rcode != 0 : raise Exception("fastqc process exited abnormally")
 
@@ -32,3 +41,5 @@ class DockerApp:
 if __name__ == "__main__" :
     DockerApp().run()
 
+
+    
