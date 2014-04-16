@@ -17,7 +17,7 @@ class DockerApp:
         self.numIter = properties["Input.num-iter"]["Content"]
         self.outProjID = properties["Input.project-id"]["Content"]["Id"]
         self.computePMD = "-partial" if "Input.do-pmd" in properties else ""
-        self.verbose = "-verbose" if "Input.verbose" in properties else ""
+        self.verbose = "-verbose"
 
         self.app = "/home/methpipe/methpipe/bin/hmr"
         self.infile = "/data/input/appresults/" + self.InAppResultID \
