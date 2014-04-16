@@ -38,7 +38,7 @@
 		}, 
 		{
 			"$type": "Numeric",
-			"id": "disert-size",
+			"id": "desert-size",
 			"size": 50, 
 			"required": false,
 			"label": "Max distance between CpGs with reads in HMR",
