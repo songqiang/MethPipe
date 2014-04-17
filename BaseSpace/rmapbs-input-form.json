@@ -1,0 +1,129 @@
+{
+    "$type": "Form",
+    "fields": [
+        {
+            "$type": "TextBox",
+            "size": 400,
+            "minLength": 0,
+            "maxLength": 150,
+            "value": "Example [LocalDateTime]",
+            "label": "Analysis Name",
+            "required": true,
+            "requiredMessage": "Please enter name for your app session.",
+            "id": "app-session-name"
+        },
+        {
+            "$type": "FileChooser",
+			"id": "fastq-file",
+			"label": "Input read file:",
+			"size": 500,
+			"valueType": "Input",
+			"allowedPermissions": "read",
+			"extensionFilters": ".fq, .fastq",
+			"chooserType": "ByProject",
+			"multiselect": false,
+            "required": true,
+			"requiredMessage": "Please choose a file",
+		},
+        {
+        	"$type": "FileChooser",
+			"id": "genome-file",
+			"label": "Reference genome sequence file:",
+			"size": 500,
+			"valueType": "Input",
+			"allowedPermissions": "read",
+			"extensionFilters": ".fa",
+			"chooserType": "ByProject",
+			"multiselect": false,
+            "required": true,
+			"requiredMessage": "Please choose a file",
+		},
+    	{
+			"$type": "Numeric",
+			"id": "index-first-read",
+			"size": 50, 
+			"required": false,
+			"label": "Index of the first read to be mapped",
+			"min": 0, 
+			"max": 1000000000,
+			"value": 0,
+			"numericType": "Integer", 
+		}, 
+        {
+			"$type": "Numeric",
+			"id": "num-read",
+			"size": 50, 
+			"required": false,
+			"label": "Number of reads to be mapped",
+			"min": 0, 
+			"max": 1000000000,
+			"value": 1000000000,
+			"numericType": "Integer", 
+		}, 
+    	{
+			"$type": "Numeric",
+			"id": "max-mismatch",
+			"size": 50, 
+			"required": false,
+			"label": "Max mismatches allowed in reads (can be fractional)",
+			"min": 0, 
+			"max": 100,
+			"value": 6,
+			"numericType": "Integer", 
+		}, 
+    	{
+			"$type": "Numeric",
+			"id": "max-mapping-locs",
+			"size": 50, 
+			"required": false,
+			"label": "maximum allowed mappings for a read",
+			"min": 1, 
+			"max": 100,
+			"value": 1,
+			"numericType": "Integer", 
+		}, 
+        {
+            "$type": "TextBox",
+	        "size": 300,
+	        "value": "",
+	        "label": "Adapter sequences",
+	        "required": false,
+	        "requiredMessage": "Please enter name for your app session.",
+	        "id": "adapter-seq",
+        },        
+        {
+            "$type": "SectionBreak"
+        },
+        {
+            "$type": "ProjectChooser",
+            "size": 300,
+            "valueType": "Output",
+            "allowedPermissions": "owner",
+            "label": "Save Results To",
+            "required": true,
+            "requiredMessage": "Please choose a project",
+            "id": "project-id",
+            "allowResourceCreation": true,
+            "rules": "is-project-owner"
+        },
+        {
+            "$type": "SectionBreak"
+        }
+    ],
+    "rulesets":[
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Read",
+            "severity": "Error",
+            "message": "You do not have read access to the selected sample",
+            "id": "sample-reader"
+        },
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Own",
+            "severity": "Error",
+            "message": "You aren't the owner of the selected project.",
+            "id": "is-project-owner"
+        }
+    ]
+}
