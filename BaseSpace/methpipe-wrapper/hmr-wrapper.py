@@ -23,19 +23,19 @@ class DockerApp:
         self.infile = "/data/input/appresults/" + self.InAppResultID \
           + "/" + self.methfile
         self.outfile = "/data/output/appresults/" + self.outProjID \
-          + "/" + self.methfile.replace(".meth", ".hmr")
+          + "/HMRs/" + self.methfile.replace(".meth", ".hmr")
           
     def run(self):
         outdir = os.path.dirname(self.outfile)
         if not os.path.exists(outdir):
             os.makedirs(outdir)
-        command_list = [self.app, "-itr", self.numIter, \
+        command_list = [self.app, self.infile, "-itr", self.numIter, \
                         "-desert", self.desertSize, \
-                        self.computePMD, self.verbose, "-out", \
-                        self.outfile, self.infile]
+                        "-out", self.outfile, self.verbose]
+        if self.computePMD: command_list.append(self.computePMD)
         print "\t".join(command_list)
         rcode = subprocess.call( command_list )
-        if rcode != 0 : raise Exception("fastqc process exited abnormally")
+        if rcode != 0 : raise Exception("Exited abnormally")
 
 #the entry point
 if __name__ == "__main__" :
