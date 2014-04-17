@@ -65,23 +65,6 @@
 			]
 		},
         {
-			"$type": "RadioButton",
-			"id": "verbose",
-			"label": "Print verbose running information:",
-    		"required": false,
-			"choices": [
-				{
-					"value": 1
-				}
-			],
-			"togglers": [
-				{
-					"toggleOnValue": 1, 
-					"toggleFields": "name,state" 
-				}    
-			]
-		},
-        {
             "$type": "ProjectChooser",
             "size": 300,
             "valueType": "Output",

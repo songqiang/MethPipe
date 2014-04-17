@@ -1,14 +1,7 @@
 function launchSpec(dataProvider)
 {
-    var methfile = dataProvider.GetProperty("Input.meth-file").Path;
-	var iter = dataProvider.GetProperty("Input.num-iter");
-    var projectID = dataProvider.GetProperty("Input.project-id").Id;
-    var outdir = "/data/output/appresults/";
-    var indir = "/data/input/appresults/";
-    var outfile = outdir.concat(projectID, );
-	
     var retval = {
-        commandLine: ["/home/methpipe/methpipe/bin/hmr", methfile, "-i", iter.toString(),  "-v", "-o", outfile],
+        commandLine: ["python", "/home/methpipe/methpipe-wrapper/hmr-wrapper.py"],
         containerImageId:"songqiang/methpipe"
     };
 	
