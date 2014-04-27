@@ -1,4 +1,4 @@
-methpipe
+MethPipe
 ========
 
 MethPipe is a comprehensive software package for analyzing bisulfite
