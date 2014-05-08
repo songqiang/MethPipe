@@ -26,10 +26,10 @@ function logrun # logfile command
 
 export Genome_Dir=~qiangson/panfs/data/human/hg19/sequences
 export rmapbs=~qiangson/app/rmap/bin/rmapbs
-export methcounts=~qiangson/app/methpipe/trunk/bin/methcounts
-export duplicateremover=~qiangson/app/methpipe/trunk/bin/duplicate-remover
-export hypermr=~qiangson/app/methpipe/trunk/bin/hmr_plant
-export bsrate=~qiangson/app/methpipe/trunk/bin/bsrate
+export methcounts=~qiangson/app/methpipe/bin/methcounts
+export duplicateremover=~qiangson/app/methpipe/bin/duplicate-remover
+export hypermr=~qiangson/app/methpipe/bin/hmr_plant
+export bsrate=~qiangson/app/methpipe/bin/bsrate
 export LC_ALL=C
 
 cd $resultsDir
@@ -41,8 +41,6 @@ methstatsFile=$id.methstats
 allmethstatsFile=$id.all.methstats
 bsrateFile=$id.bsrate
 dupstatsFile=$id.dupstats
-hypermrFile=$id.hypermr
-allhypermrFile=$id.all.hypermr
 
 mkdir -p log
 logfile=log/$id.log
