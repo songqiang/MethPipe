@@ -40,7 +40,7 @@ function clean_finished_single_end_jobs # workdir number
 {
     workdir=$1;
     cd $workdir;
-    lc=~qiangson/app/methpipe/trunk/bin/lc_approx;
+    lc=~qiangson/app/methpipe/bin/lc_approx;
     number=1000000;
 	if [ "$#" -eq 2 ];
 	then
@@ -79,7 +79,7 @@ function report_unfinished_single_end_jobs # workdir number
 {
     workdir=$1;
     cd $workdir;
-    lc=~qiangson/app/methpipe/trunk/bin/lc_approx;
+    lc=~qiangson/app/methpipe/bin/lc_approx;
 	number=1000000;
 	if [ "$#" -eq 2 ];
 	then
@@ -106,7 +106,7 @@ function clean_finished_paired_end_jobs # workdir
 {
     workdir=$1;
     cd $workdir;
-    lc=~qiangson/app/methpipe/trunk/bin/lc_approx;
+    lc=~qiangson/app/methpipe/bin/lc_approx;
     number=1000000;
 	if [ "$#" -eq 2 ];
 	then
@@ -148,7 +148,7 @@ function report_unfinished_paired_end_jobs # workdir number
 {
     workdir=$1;
     cd $workdir;
-    lc=~qiangson/app/methpipe/trunk/bin/lc_approx;
+    lc=~qiangson/app/methpipe/bin/lc_approx;
     number=1000000;
 	if [ "$#" -eq 2 ];
 	then
