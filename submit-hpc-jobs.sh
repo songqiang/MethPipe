@@ -80,3 +80,38 @@ function submit_paired_end_read_jobs # workdir
     done
 }
 
+function submit_methpipe_jobs # workdir
+{
+    workdir=$1;
+    cd $workdir;
+    logdir=$PWD/work/log;
+    maxJobs=25;
+    username=$(whoami);
+    numJobs=$(qstat|grep $username|wc -l);
+    for sample_dir in $(find -L $PWD  -name "results_*[0-9]" -a -type d);
+    do
+		sample_id=$(basename $(dirname $sample_dir));
+		logfile=$sample_dir/log/${sample_id}.log;
+		[ ! -f $logfile ] \
+			&& echo qsub -o $logdir -e $logdir \
+            -v resultsDir="$sample_dir" \
+			$PWD/work/script/run-methpipe.sh \
+            && qsub -o $logdir -e $logdir \
+            -v resultsDir="$sample_dir" \
+			$PWD/work/script/run-methpipe.sh \
+            && numJobs=$(echo $numJobs + 1 | bc) \
+            && sleep  5;   
+            
+        if [ $numJobs -ge $maxJobs ];
+        then       
+            while [ "$(qstat|grep $username|wc -l)" -ge $maxJobs ]; 
+            do
+                date && sleep 2h; 
+            done
+            numJobs=$(qstat|grep $username|wc -l);
+        fi
+    done
+} 
+
+
+
