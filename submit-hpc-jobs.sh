@@ -5,7 +5,7 @@ function submit_single_end_read_jobs # workdir
 {
     workdir=$1;
     cd $workdir;
-    lc=~qiangson/app/methpipe/trunk/bin/lc_approx;
+    lc=~qiangson/app/methpipe/bin/lc_approx;
     logdir=$PWD/work/log;
     number=4000000;
     maxJobs=250;
@@ -44,7 +44,7 @@ function submit_paired_end_read_jobs # workdir
 {
     workdir=$1;
     cd $workdir;
-    lc=~qiangson/app/methpipe/trunk/bin/lc_approx;
+    lc=~qiangson/app/methpipe/bin/lc_approx;
     logdir=$PWD/work/log;
     number=1000000;
     username=$(whoami);
@@ -112,6 +112,5 @@ function submit_methpipe_jobs # workdir
         fi
     done
 } 
-
 
 
