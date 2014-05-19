@@ -32,8 +32,8 @@ function merge_technical_rep #dir assembly
 
     if [ $nrep -gt 1 ];
     then 
-        mergemeth=~qiangson/app/methpipe/trunk/bin/merge-methcounts
-        mergebsrate=~qiangson/app/methpipe/trunk/bin/merge-bsrate
+        mergemeth=~qiangson/app/methpipe/bin/merge-methcounts
+        mergebsrate=~qiangson/app/methpipe/bin/merge-bsrate
 		
         methfs=$(find ../${id}_L[0-9]* -maxdepth 2 -name "*.meth" -a ! -name "*all.meth")
         [ ! -f $id.meth ] && [ ! -z "$methfs" ] && $mergemeth $methfs -o $id.meth  -S $id.methstats -v
@@ -80,8 +80,8 @@ function merge_biological_rep #dir assembly
 
     if [ $nrep -gt 1 ];
     then 
-        mergemeth=~qiangson/app/methpipe/trunk/bin/merge-methcounts
-        mergebsrate=~qiangson/app/methpipe/trunk/bin/merge-bsrate
+        mergemeth=~qiangson/app/methpipe/bin/merge-methcounts
+        mergebsrate=~qiangson/app/methpipe/bin/merge-bsrate
 		
         methfs=$(find ../${id}_R[0-9]* -maxdepth 2 -name "*.meth" -a ! -name "*all.meth")
         [ ! -f $id.meth ] && [ ! -z "$methfs" ] && $mergemeth $methfs -o $id.meth  -S $id.methstats -v
