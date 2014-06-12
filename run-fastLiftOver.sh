@@ -29,3 +29,4 @@ print chr,pos,strand,seq,meth,t;
 }' > $tmpfile;
 mv $tmpfile $toFile;
 wc -l $toFile;
+
