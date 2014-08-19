@@ -8,6 +8,8 @@ import matplotlib as mpl
 mpl.use("Agg")
 import matplotlib.pyplot as plt
 
+import xml.etree.ElementTree as ET
+
 class DockerApp:
     def __init__(self):
         appconf = "/data/input/AppSession.json" if len(sys.argv) == 1 \
@@ -40,6 +42,7 @@ class DockerApp:
             hmr_lens.append(int(f[2]) - int(f[1]))
             hmr_cpgs.append(int(f[4]))
 
+            
         # bar plot for hmr number in each chromosome
         chrom_counts = dict()
         for c in chroms:
@@ -63,6 +66,29 @@ class DockerApp:
         plt.hist([hmr_cpgs[i] * 1.0 / hmr_lens[i] for i in range(len(hmr_lens))], bins = 20)
         plt.savefig(self.outfile + ".hmr_CpG_density.png", format = "png")
         plt.close()
+
+        # build XML summary file
+        xml_root = ET.Element("summary")
+
+        hmrfile = ET.SubElement(xml_root, "HMRFile")
+
+        hmr_number = ET.SubElement(hmrfile, "hmrNum")
+        hmr_number.text = str(len(hmr_lens))
+
+        chrom_number = ET.SubElement(hmrfile, "chromNum")
+        chrom_number.text = str(len(chroms))
+
+        hmr_meanSize = ET.SubElement(hmrfile, "meanSize")
+        hmr_meanSize.text = str(sum(hmr_lens) / len(hmr_lens))
+
+        hmr_minSize = ET.SubElement(hmrfile, "minSize")
+        hmr_minSize.text = str(min(hmr_lens))
+
+        hmr_maxSize = ET.SubElement(hmrfile, "maxSize")
+        hmr_maxSize.text = str(max(hmr_lens))
+        
+        xml_tree = ET.ElementTree(xml_root)
+        xml_tree.write(self.outfile + ".hmr_summary.xml")
 
     def run(self):
         outdir = os.path.dirname(self.outfile)
