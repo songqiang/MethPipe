@@ -30,19 +30,21 @@ class DockerApp:
         
         self.outProjID = properties["Input.project-id"]["Content"]["Id"]
 
-        self.methfile = "/data/output/appresults/" + self.outProjID \
-          + "/" + self.mappedReadFile.replace(".mr", ".meth")
-          
+        self.methfile = self.mappedReadFile.replace(".mr", ".meth")
+        self.methfile = self.methfile.replace( \
+            "/data/input/appresults/" + self.InAppResultID + "/", \
+            "/data/output/appresults/" + self.outProjID + "/meth/")          
     def run(self):
+        command_list = [self.app, self.mappedReadFile, \
+                        "-output", self.methfile, \
+                        "-chrom", self.genomefile, \
+                        "-max_length", self.maxReadLen, \
+                        "-max", self.maxMismatches, self.verbose]
+        if not self.nonCpG: command_list.append(self.nonCpG)
+        print "\t".join(command_list)
         outdir = os.path.dirname(self.methfile)
         if not os.path.exists(outdir):
             os.makedirs(outdir)
-        command_list = [self.app, "-output", self.methfile, \
-                        "-chrom", self.genomefile, self.nonCpG, \
-                        "-max_length", self.maxReadLen, \
-                        "-max", self.maxMismatches, self.verbose, \
-                        self.mappedReadFile]
-        print "\t".join(command_list)
         rcode = subprocess.call( command_list )
         if rcode != 0 : raise Exception("fastqc process exited abnormally")
 

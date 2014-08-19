@@ -42,7 +42,7 @@
 			"allowedPermissions": "read",
 			"extensionFilters": ".mr",
 			"chooserType": "ByProject",
-			"multiselect": true,
+			"multiselect": false,
             "required": true,
 			"requiredMessage": "Please choose a file",
 		},
@@ -55,7 +55,7 @@
 			"allowedPermissions": "read",
 			"extensionFilters": ".fa",
 			"chooserType": "ByProject",
-			"multiselect": true,
+			"multiselect": false,
             "required": true,
 			"requiredMessage": "Please choose a file",
 		},
@@ -97,6 +97,9 @@
 				}    
 			]
 		},
+        {
+            "$type": "SectionBreak"
+        },
         {
             "$type": "ProjectChooser",
             "size": 300,
