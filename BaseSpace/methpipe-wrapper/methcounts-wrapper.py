@@ -3,6 +3,14 @@ import subprocess
 import json
 import sys
 
+import numpy as np
+import matplotlib as mpl
+mpl.use("Agg")
+import matplotlib.pyplot as plt
+
+import xml.etree.ElementTree as ET
+
+
 class DockerApp:
     def __init__(self):
         appconf = "/data/input/AppSession.json" if len(sys.argv) == 1 \
@@ -39,6 +47,43 @@ class DockerApp:
         self.methstatsfile = self.methfile.replace(".meth", ".methstats")
         self.bsratefile = self.methfile.replace(".meth", ".bsrate")
 
+    def gen_reports(self):
+        # build XML summary file
+        xml_root = ET.Element("summary")
+        siteNum = ET.SubElement(xml_root, "siteNum")
+        siteCovered = ET.SubElement(xml_root, "siteCovered")
+        fraction = ET.SubElement(xml_root, "fraction")
+        maxCoverage = ET.SubElement(xml_root, "maxCoverage")
+        meanCoverage = ET.SubElement(xml_root, "meanCoverage")
+        meanCoverageNZ = ET.SubElement(xml_root, "meanCoverageNZ")
+        meanMeth = ET.SubElement(xml_root, "meanMeth")
+        bsrate = ET.SubElement(xml_root, "bsrate")
+
+        f = open(self.methstatsfile, "r")
+        l = f.readline()
+        siteNum.text = l[(l.find(":") + 2):]
+        l = f.readline()
+        siteCovered.text = l[(l.find(":") + 2):]
+        l = f.readline()
+        fraction.text = l[(l.find(":") + 2):]
+        l = f.readline()
+        maxCoverage.text = l[(l.find(":") + 2):]
+        l = f.readline()
+        meanCoverage.text = l[(l.find(":") + 2):]
+        l = f.readline()
+        meanCoverageNZ.text = l[(l.find(":") + 2):]
+        l = f.readline()
+        meanMeth.text = l[(l.find(":") + 2):]
+        f.close()
+
+        f = open(self.bsratefile, "r")
+        l = f.readline()
+        bsrate.text = l[(l.find("=") + 2):]
+        f.close()
+
+        xml_tree = ET.ElementTree(xml_root)
+        xml_tree.write(self.methfile.replace(".meth", ".summary.xml"))
+        
     def run(self):
         # run methcounts program
         command_list = [self.methcounts_app, self.mappedReadFile, \
@@ -63,7 +108,8 @@ class DockerApp:
         print "\t".join(command_list)
         rcode = subprocess.call( command_list )
         if rcode != 0 : raise Exception("bsrate process exited abnormally")
-            
+
+        self.gen_reports()    
             
 #the entry point
 if __name__ == "__main__" :
