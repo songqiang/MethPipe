@@ -11,7 +11,8 @@ class DockerApp:
         properties = jf["Properties"]["Items"]
         properties = dict(zip([p["Name"] for p in properties], properties))
 
-        self.app = "/home/methpipe/methpipe/bin/methcounts"
+        self.methcounts_app = "/home/methpipe/methpipe/bin/methcounts"
+        self.bsrate_app = "/home/methpipe/methpipe/bin/bsrate"
         
         self.InAppResultID = properties["Input.AppResults"]["Items"][0]["Id"]
         self.genomefile = properties["Input.genome-file"]["Content"]["Path"]
@@ -34,9 +35,15 @@ class DockerApp:
         self.methfile = self.methfile.replace( \
             "/data/input/appresults/" + self.InAppResultID + "/", \
             "/data/output/appresults/" + self.outProjID + "/meth/")          
+
+        self.methstatsfile = self.methfile.replace(".meth", ".methstats")
+        self.bsratefile = self.methfile.replace(".meth", ".bsrate")
+
     def run(self):
-        command_list = [self.app, self.mappedReadFile, \
+        # run methcounts program
+        command_list = [self.methcounts_app, self.mappedReadFile, \
                         "-output", self.methfile, \
+                        "-output_stat", self.methstatsfile, \
                         "-chrom", self.genomefile, \
                         "-max_length", self.maxReadLen, \
                         "-max", self.maxMismatches, self.verbose]
@@ -46,8 +53,18 @@ class DockerApp:
         if not os.path.exists(outdir):
             os.makedirs(outdir)
         rcode = subprocess.call( command_list )
-        if rcode != 0 : raise Exception("fastqc process exited abnormally")
+        if rcode != 0 : raise Exception("methcounts process exited abnormally")
 
+        # run bsrate program
+        command_list = [self.bsrate_app, self.mappedReadFile, \
+                        "-output", self.bsratefile, \
+                        "-chrom", self.genomefile, \
+                        "-max", self.maxMismatches, self.verbose]
+        print "\t".join(command_list)
+        rcode = subprocess.call( command_list )
+        if rcode != 0 : raise Exception("bsrate process exited abnormally")
+            
+            
 #the entry point
 if __name__ == "__main__" :
     DockerApp().run()
