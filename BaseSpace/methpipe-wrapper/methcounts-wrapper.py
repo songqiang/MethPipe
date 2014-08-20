@@ -48,6 +48,23 @@ class DockerApp:
         self.bsratefile = self.methfile.replace(".meth", ".bsrate")
 
     def gen_reports(self):
+        # conversion rate along reads
+        bs_rate_a = np.loadtxt(self.bsratefile, skiprows = 4)
+        idx = bs_rate_a[:, 9] > 0
+        plt.scatter(bs_rate_a[idx, 0], bs_rate_a[idx, 9])
+        plt.xlim(0, 100)
+        plt.ylim(ymax = 1)
+        plt.xlabel("position in reads")
+        plt.ylabel("conversion rate")
+        plt.savefig(self.bsratefile + ".png", format = "png")
+        plt.close()
+
+        # methylation level histogram
+        meth_cov = np.loadtxt(self.methfile, usecols = (4, 5))
+        plt.hist(meth_cov[meth_cov[:, 1] > 0, 0], bins = 20)]])
+        plt.savefig(self.methfile + ".png", format = "png")
+        plt.close()
+
         # build XML summary file
         xml_root = ET.Element("summary")
         siteNum = ET.SubElement(xml_root, "siteNum")
