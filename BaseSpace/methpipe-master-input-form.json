@@ -1,0 +1,182 @@
+{
+    "$type": "Form",
+    "fields": [
+        {
+            "$type": "TextBox",
+            "size": 400,
+            "minLength": 0,
+            "maxLength": 150,
+            "value": "Example [LocalDateTime]",
+            "label": "Analysis Name",
+            "required": true,
+            "requiredMessage": "Please enter name for your app session.",
+            "id": "app-session-name"
+        },
+        {
+            "$type": "SampleChooser",
+            "size": 300,
+            "valueType": "Input",
+            "allowedPermissions": "read",
+            "label": "Sample",
+            "required": false,
+            "id": "sample-id",
+            "rules": "sample-reader"
+        },
+
+
+        {
+        "$type": "Select",
+         "id": "genome-id",
+         "label": "Reference Genome",
+         "choices": [ 
+          { 
+              "value": "Human",
+              "text": "Human (UCSC HG 19)",
+              "selected": "true"
+          },
+          { 
+              "value": "Mouse",
+              "text": "Mouse (UCSC MM9)",
+              "selected": "false"
+          },
+          { 
+              "value": "Rat",
+              "text": "Rat (UCSC RN5)",
+              "selected": "false"
+          }  ]
+        },
+
+        {
+            "$type": "SectionBreak"
+        },
+    {
+    "$type": "FieldSet",
+		"id": "mapping",
+		"label": "Options for mapping reads",
+		"isCollapsible": true,
+		"isOpen": false,
+		"fields": [
+                {
+					"$type": "Numeric",
+					"id": "max-mismatch",
+					"size": 50, 
+					"required": false,
+					"label": "Max mismatches allowed in reads (can be fractional)",
+					"min": 0, 
+					"max": 100,
+					"value": 6,
+					"numericType": "Integer", 
+					}, 
+			{
+				"$type": "Numeric",
+				"id": "max-mapping-locs",
+				"size": 50, 
+				"required": false,
+				"label": "maximum allowed mappings for a read",
+				"min": 1, 
+				"max": 100,
+				"value": 1,
+				"numericType": "Integer", 
+				}, 
+        {
+            "$type": "TextBox",
+			        "size": 300,
+			        "value": "",
+			        "label": "Adapter sequences",
+			        "required": false,
+			        "requiredMessage": "Please enter name for your app session.",
+			        "id": "adapter-seq",
+        }        
+        ]
+        },
+        {
+            "$type": "SectionBreak"
+        },
+{
+    "$type": "FieldSet",
+    "id": "hmr-op",
+	"label": "Options for identifying hypo-methylated regions",
+	"isCollapsible": true,
+	"isOpen": false,
+	"fields": [
+		{
+			"$type": "Numeric",
+			"id": "num-iter",
+			"size": 50, 
+			"required": false,
+			"label": "Number of iterations when training model",
+			"min": 0, 
+			"max": 100,
+			"value": 15,
+			"numericType": "Integer", 
+			}, 
+		{
+			"$type": "Numeric",
+			"id": "desert-size",
+			"size": 50, 
+			"required": false,
+			"label": "Max distance between CpGs with reads in HMR",
+			"min": 5000, 
+			"max": 20000,
+			"value": 10000,
+			"numericType": "Integer", 
+			}, 
+		{
+			"$type": "RadioButton",
+			"id": "do-pmd",
+			"label": "Identify PMRs instead of HMRs:",
+			"required": false,
+			"choices": [
+				{
+					"value": 1
+					}
+				],
+			"togglers": [
+				{
+					"toggleOnValue": 1, 
+					"toggleFields": "name,state" 
+					}    
+				]
+			},
+
+
+                ]
+        },
+
+        {
+            "$type": "SectionBreak"
+        },
+
+        {
+            "$type": "ProjectChooser",
+            "size": 300,
+            "valueType": "Output",
+            "allowedPermissions": "owner",
+            "label": "Save Results To",
+            "required": true,
+            "requiredMessage": "Please choose a project",
+            "id": "project-id",
+            "allowResourceCreation": true,
+            "rules": "is-project-owner"
+        },
+        {
+            "$type": "SectionBreak"
+        }
+    ],
+    "rulesets":[
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Read",
+            "severity": "Error",
+            "message": "You do not have read access to the selected sample",
+            "id": "sample-reader"
+        },
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Own",
+            "severity": "Error",
+            "message": "You aren't the owner of the selected project.",
+            "id": "is-project-owner"
+        }
+    ]
+}
