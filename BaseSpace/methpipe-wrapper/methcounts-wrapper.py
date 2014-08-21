@@ -61,7 +61,7 @@ class DockerApp:
 
         # methylation level histogram
         meth_cov = np.loadtxt(self.methfile, usecols = (4, 5))
-        plt.hist(meth_cov[meth_cov[:, 1] > 0, 0], bins = 20)]])
+        plt.hist(meth_cov[meth_cov[:, 1] > 0, 0], bins = 20)
         plt.savefig(self.methfile + ".png", format = "png")
         plt.close()
 
