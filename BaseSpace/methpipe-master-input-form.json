@@ -12,43 +12,68 @@
             "requiredMessage": "Please enter name for your app session.",
             "id": "app-session-name"
         },
+
         {
-            "$type": "SampleChooser",
-            "size": 300,
-            "valueType": "Input",
-            "allowedPermissions": "read",
-            "label": "Sample",
+            "$type": "FileChooser",
+			"id": "fastq-file-T-rich",
+			"label": "Input read file",
+			"size": 400,
+			"valueType": "Input",
+			"allowedPermissions": "read",
+			"extensionFilters": ".fq, .fastq",
+			"chooserType": "ByProject",
+			"multiselect": false,
+            "required": true,
+			"requiredMessage": "Please choose a file",
+		},
+
+        {
+            "$type": "FileChooser",
+			"id": "fastq-file-A-rich",
+			"label": "Input read file (second mate; if single-end, leave blank)",
+			"value": "NA",
+			"size": 400,
+			"valueType": "Input",
+			"allowedPermissions": "read",
+			"extensionFilters": ".fq, .fastq",
+			"chooserType": "ByProject",
+			"multiselect": false,
             "required": false,
-            "id": "sample-id",
-            "rules": "sample-reader"
-        },
-
+		},
 
         {
-        "$type": "Select",
-         "id": "genome-id",
-         "label": "Reference Genome",
-         "choices": [ 
-          { 
-              "value": "Human",
-              "text": "Human (UCSC HG 19)",
-              "selected": "true"
-          },
-          { 
-              "value": "Mouse",
-              "text": "Mouse (UCSC MM9)",
-              "selected": "false"
-          },
-          { 
-              "value": "Rat",
-              "text": "Rat (UCSC RN5)",
-              "selected": "false"
-          }  ]
-        },
+        	"$type": "FileChooser",
+			"id": "genome-file",
+			"label": "Reference genome sequence file",
+			"size": 400,
+			"valueType": "Input",
+			"allowedPermissions": "read",
+			"extensionFilters": ".fa",
+			"chooserType": "ByProject",
+			"multiselect": true,
+            "required": true,
+			"requiredMessage": "Please choose reference genome sequence file",
+		},
+
+
+{"$type": "SectionBreak" },
 
         {
-            "$type": "SectionBreak"
+            "$type": "ProjectChooser",
+            "size": 400,
+            "valueType": "Output",
+            "allowedPermissions": "owner",
+            "label": "Save Results To",
+            "required": true,
+            "requiredMessage": "Please choose a project",
+            "id": "project-id",
+            "allowResourceCreation": true,
+            "rules": "is-project-owner"
         },
+
+{ "$type": "SectionBreak" },
+
+
     {
     "$type": "FieldSet",
 		"id": "mapping",
@@ -88,10 +113,46 @@
 			        "id": "adapter-seq",
         }        
         ]
-        },
+    },
         {
             "$type": "SectionBreak"
         },
+
+{
+"$type": "FieldSet",
+"id": "mapping",
+"label": "Options for estimating methylation level, coverage and conversion rate",
+"isCollapsible": true,
+"isOpen": false,
+"fields": [
+		{
+			"$type": "Numeric",
+			"id": "max-read-length",
+			"size": 50, 
+			"required": false,
+			"label": "max read length in input file",
+			"min": 20, 
+			"max": 10000,
+			"value": 10000,
+			"numericType": "Integer", 
+		}, 
+    	{
+			"$type": "RadioButton",
+			"id": "non-CpG",
+			"label": "Process non-CpG sites:",
+			"choices": [{"value": 1}],
+			"togglers": [
+				{
+					"toggleOnValue": 1, 
+					"toggleFields": "non-CpG" 
+				}    
+			]
+		},
+]
+},
+
+{ "$type": "SectionBreak" },
+
 {
     "$type": "FieldSet",
     "id": "hmr-op",
@@ -126,42 +187,138 @@
 			"id": "do-pmd",
 			"label": "Identify PMRs instead of HMRs:",
 			"required": false,
-			"choices": [
-				{
-					"value": 1
-					}
-				],
+			"choices": [{ "value": 1 }],
 			"togglers": [
 				{
 					"toggleOnValue": 1, 
-					"toggleFields": "name,state" 
-					}    
-				]
-			},
+					"toggleFields": "do-pmd" 
+				}    
+			]
+		},
 
 
                 ]
-        },
+ },
 
-        {
-            "$type": "SectionBreak"
-        },
+ {    
+	 "$type": "SectionBreak"
+ },
 
-        {
-            "$type": "ProjectChooser",
-            "size": 300,
-            "valueType": "Output",
-            "allowedPermissions": "owner",
-            "label": "Save Results To",
-            "required": true,
-            "requiredMessage": "Please choose a project",
-            "id": "project-id",
-            "allowResourceCreation": true,
-            "rules": "is-project-owner"
-        },
-        {
-            "$type": "SectionBreak"
-        }
+
+{
+    "$type": "FieldSet",
+    "id": "amr-op",
+	"label": "Options for identifying allelic methylated regions",
+	"isCollapsible": true,
+	"isOpen": false,
+	"fields": [
+
+		{
+			"$type": "RadioButton",
+			"id": "amr-enable",
+			"label": "Call AMR identification program (disabled by default)",
+			"required": false,
+			"choices": [{ "value": 1}],
+			"togglers": [
+				{
+					"toggleOnValue": 1, 
+					"toggleFields": "amr-enable" 
+				}    
+			]
+	    },
+
+		{
+			"$type": "Numeric",
+			"id": "amr-num-iter",
+			"size": 50, 
+			"required": false,
+			"label": "Number of iterations for EM during AMR identification",
+			"min": 10, 
+			"max": 100,
+			"value": 15,
+			"numericType": "Integer", 
+	     }, 
+
+		{
+			"$type": "Numeric",
+			"id": "amr-sliding-win-size",
+			"size": 50, 
+			"required": false,
+			"label": "Sliding window size",
+			"min": 100, 
+			"max": 1000,
+			"value": 200,
+			"numericType": "Integer", 
+	     }, 
+
+		{
+			"$type": "Numeric",
+			"id": "amr-min-coverage",
+			"size": 50, 
+			"required": false,
+			"label": "Min coverage per CpG",
+			"min": 5, 
+			"max": 1000,
+			"value": 5,
+			"numericType": "FloatingPoint", 
+	     }, 
+
+		{
+			"$type": "Numeric",
+			"id": "amr-allowed-gap",
+			"size": 50, 
+			"required": false,
+			"label": "Min allowed gaps between AMRs when merging (in bp)",
+			"min": 0, 
+			"max": 500,
+			"value": 200,
+			"numericType": "Integer", 
+	     }, 
+
+		{
+			"$type": "Numeric",
+			"id": "amr-pval-cutoff",
+			"size": 50, 
+			"required": false,
+			"label": "P-value cutoff",
+			"min": 0, 
+			"max": 0.1,
+			"value": 0.01,
+			"numericType": "FloatingPoint", 
+	     }, 
+
+		{
+			"$type": "RadioButton",
+			"id": "amr-BH-adjust",
+			"label": "Use Benjaminin-Hochberg adjustment",
+			"required": false,
+			"choices": [{ "value": 1}],
+			"togglers": [
+				{
+					"toggleOnValue": 1, 
+					"toggleFields": "amr-BH-adjustment" 
+				}    
+			]
+	    },
+
+		{
+			"$type": "RadioButton",
+			"id": "amr-use-BIC",
+			"label": "Use BIC to compare models",
+			"required": false,
+			"choices": [{ "value": 1}],
+			"togglers": [
+				{
+					"toggleOnValue": 1, 
+					"toggleFields": "amr-use-BIC" 
+				}    
+			]
+	    },
+
+                ]
+},
+
+
     ],
     "rulesets":[
         {
