@@ -3,337 +3,335 @@
     "fields": [
         {
             "$type": "TextBox",
-            "size": 400,
-            "minLength": 0,
-            "maxLength": 150,
-            "value": "Example [LocalDateTime]",
+            "id": "app-session-name",
             "label": "Analysis Name",
+            "maxLength": 150,
+            "minLength": 0,
             "required": true,
             "requiredMessage": "Please enter name for your app session.",
-            "id": "app-session-name"
-        },
-
-        {
-            "$type": "FileChooser",
-			"id": "fastq-file-T-rich",
-			"label": "Input read file",
-			"size": 400,
-			"valueType": "Input",
-			"allowedPermissions": "read",
-			"extensionFilters": ".fq, .fastq",
-			"chooserType": "ByProject",
-			"multiselect": false,
-            "required": true,
-			"requiredMessage": "Please choose a file",
-		},
-
-        {
-            "$type": "FileChooser",
-			"id": "fastq-file-A-rich",
-			"label": "Input read file (second mate; if single-end, leave blank)",
-			"value": "NA",
-			"size": 400,
-			"valueType": "Input",
-			"allowedPermissions": "read",
-			"extensionFilters": ".fq, .fastq",
-			"chooserType": "ByProject",
-			"multiselect": false,
-            "required": false,
-		},
-
-        {
-        	"$type": "FileChooser",
-			"id": "genome-file",
-			"label": "Reference genome sequence file",
-			"size": 400,
-			"valueType": "Input",
-			"allowedPermissions": "read",
-			"extensionFilters": ".fa",
-			"chooserType": "ByProject",
-			"multiselect": true,
-            "required": true,
-			"requiredMessage": "Please choose reference genome sequence file",
-		},
-
-
-{"$type": "SectionBreak" },
-
-        {
-            "$type": "ProjectChooser",
             "size": 400,
-            "valueType": "Output",
-            "allowedPermissions": "owner",
-            "label": "Save Results To",
-            "required": true,
-            "requiredMessage": "Please choose a project",
-            "id": "project-id",
-            "allowResourceCreation": true,
-            "rules": "is-project-owner"
+            "value": "Example [LocalDateTime]"
         },
-
-{ "$type": "SectionBreak" },
-
-
-    {
-    "$type": "FieldSet",
-		"id": "mapping",
-		"label": "Options for mapping reads",
-		"isCollapsible": true,
-		"isOpen": false,
-		"fields": [
-                {
-					"$type": "Numeric",
-					"id": "max-mismatch",
-					"size": 50, 
-					"required": false,
-					"label": "Max mismatches allowed in reads (can be fractional)",
-					"min": 0, 
-					"max": 100,
-					"value": 6,
-					"numericType": "Integer", 
-					}, 
-			{
-				"$type": "Numeric",
-				"id": "max-mapping-locs",
-				"size": 50, 
-				"required": false,
-				"label": "maximum allowed mappings for a read",
-				"min": 1, 
-				"max": 100,
-				"value": 1,
-				"numericType": "Integer", 
-				}, 
         {
-            "$type": "TextBox",
-			        "size": 300,
-			        "value": "",
-			        "label": "Adapter sequences",
-			        "required": false,
-			        "requiredMessage": "Please enter name for your app session.",
-			        "id": "adapter-seq",
-        }        
-        ]
-    },
+            "$type": "FileChooser",
+            "allowedPermissions": "read",
+            "chooserType": "ByProject",
+            "extensionFilters": ".fq, .fastq",
+            "id": "fastq-file-T-rich",
+            "label": "Input read file",
+            "multiselect": false,
+            "required": true,
+            "requiredMessage": "Please choose a file",
+            "size": 400,
+            "valueType": "Input"
+        },
+        {
+            "$type": "FileChooser",
+            "allowedPermissions": "read",
+            "chooserType": "ByProject",
+            "extensionFilters": ".fq, .fastq",
+            "id": "fastq-file-A-rich",
+            "label": "Input read file (second mate; if single-end, leave blank)",
+            "multiselect": false,
+            "required": false,
+            "size": 400,
+            "value": "NA",
+            "valueType": "Input"
+        },
+        {
+            "$type": "FileChooser",
+            "allowedPermissions": "read",
+            "chooserType": "ByProject",
+            "extensionFilters": ".fa",
+            "id": "genome-file",
+            "label": "Reference genome sequence file",
+            "multiselect": true,
+            "required": true,
+            "requiredMessage": "Please choose reference genome sequence file",
+            "size": 400,
+            "valueType": "Input"
+        },
         {
             "$type": "SectionBreak"
         },
-
-{
-"$type": "FieldSet",
-"id": "mapping",
-"label": "Options for estimating methylation level, coverage and conversion rate",
-"isCollapsible": true,
-"isOpen": false,
-"fields": [
-		{
-			"$type": "Numeric",
-			"id": "max-read-length",
-			"size": 50, 
-			"required": false,
-			"label": "max read length in input file",
-			"min": 20, 
-			"max": 10000,
-			"value": 10000,
-			"numericType": "Integer", 
-		}, 
-    	{
-			"$type": "RadioButton",
-			"id": "non-CpG",
-			"label": "Process non-CpG sites:",
-			"choices": [{"value": 1}],
-			"togglers": [
-				{
-					"toggleOnValue": 1, 
-					"toggleFields": "non-CpG" 
-				}    
-			]
-		},
-]
-},
-
-{ "$type": "SectionBreak" },
-
-{
-    "$type": "FieldSet",
-    "id": "hmr-op",
-	"label": "Options for identifying hypo-methylated regions",
-	"isCollapsible": true,
-	"isOpen": false,
-	"fields": [
-		{
-			"$type": "Numeric",
-			"id": "num-iter",
-			"size": 50, 
-			"required": false,
-			"label": "Number of iterations when training model",
-			"min": 0, 
-			"max": 100,
-			"value": 15,
-			"numericType": "Integer", 
-			}, 
-		{
-			"$type": "Numeric",
-			"id": "desert-size",
-			"size": 50, 
-			"required": false,
-			"label": "Max distance between CpGs with reads in HMR",
-			"min": 5000, 
-			"max": 20000,
-			"value": 10000,
-			"numericType": "Integer", 
-			}, 
-		{
-			"$type": "RadioButton",
-			"id": "do-pmd",
-			"label": "Identify PMRs instead of HMRs:",
-			"required": false,
-			"choices": [{ "value": 1 }],
-			"togglers": [
-				{
-					"toggleOnValue": 1, 
-					"toggleFields": "do-pmd" 
-				}    
-			]
-		},
-
-
-                ]
- },
-
- {    
-	 "$type": "SectionBreak"
- },
-
-
-{
-    "$type": "FieldSet",
-    "id": "amr-op",
-	"label": "Options for identifying allelic methylated regions",
-	"isCollapsible": true,
-	"isOpen": false,
-	"fields": [
-
-		{
-			"$type": "RadioButton",
-			"id": "amr-enable",
-			"label": "Call AMR identification program (disabled by default)",
-			"required": false,
-			"choices": [{ "value": 1}],
-			"togglers": [
-				{
-					"toggleOnValue": 1, 
-					"toggleFields": "amr-enable" 
-				}    
-			]
-	    },
-
-		{
-			"$type": "Numeric",
-			"id": "amr-num-iter",
-			"size": 50, 
-			"required": false,
-			"label": "Number of iterations for EM during AMR identification",
-			"min": 10, 
-			"max": 100,
-			"value": 15,
-			"numericType": "Integer", 
-	     }, 
-
-		{
-			"$type": "Numeric",
-			"id": "amr-sliding-win-size",
-			"size": 50, 
-			"required": false,
-			"label": "Sliding window size",
-			"min": 100, 
-			"max": 1000,
-			"value": 200,
-			"numericType": "Integer", 
-	     }, 
-
-		{
-			"$type": "Numeric",
-			"id": "amr-min-coverage",
-			"size": 50, 
-			"required": false,
-			"label": "Min coverage per CpG",
-			"min": 5, 
-			"max": 1000,
-			"value": 5,
-			"numericType": "FloatingPoint", 
-	     }, 
-
-		{
-			"$type": "Numeric",
-			"id": "amr-allowed-gap",
-			"size": 50, 
-			"required": false,
-			"label": "Min allowed gaps between AMRs when merging (in bp)",
-			"min": 0, 
-			"max": 500,
-			"value": 200,
-			"numericType": "Integer", 
-	     }, 
-
-		{
-			"$type": "Numeric",
-			"id": "amr-pval-cutoff",
-			"size": 50, 
-			"required": false,
-			"label": "P-value cutoff",
-			"min": 0, 
-			"max": 0.1,
-			"value": 0.01,
-			"numericType": "FloatingPoint", 
-	     }, 
-
-		{
-			"$type": "RadioButton",
-			"id": "amr-BH-adjust",
-			"label": "Use Benjaminin-Hochberg adjustment",
-			"required": false,
-			"choices": [{ "value": 1}],
-			"togglers": [
-				{
-					"toggleOnValue": 1, 
-					"toggleFields": "amr-BH-adjustment" 
-				}    
-			]
-	    },
-
-		{
-			"$type": "RadioButton",
-			"id": "amr-use-BIC",
-			"label": "Use BIC to compare models",
-			"required": false,
-			"choices": [{ "value": 1}],
-			"togglers": [
-				{
-					"toggleOnValue": 1, 
-					"toggleFields": "amr-use-BIC" 
-				}    
-			]
-	    },
-
-                ]
-},
-
-
+        {
+            "$type": "ProjectChooser",
+            "allowResourceCreation": true,
+            "allowedPermissions": "owner",
+            "id": "project-id",
+            "label": "Save Results To",
+            "required": true,
+            "requiredMessage": "Please choose a project",
+            "rules": "is-project-owner",
+            "size": 400,
+            "valueType": "Output"
+        },
+        {
+            "$type": "SectionBreak"
+        },
+        {
+            "$type": "FieldSet",
+            "fields": [
+                {
+                    "$type": "Numeric",
+                    "id": "max-mismatch",
+                    "label": "Max mismatches allowed in reads (can be fractional)",
+                    "max": 100,
+                    "min": 0,
+                    "numericType": "Integer",
+                    "required": false,
+                    "size": 50,
+                    "value": 6
+                },
+                {
+                    "$type": "Numeric",
+                    "id": "max-mapping-locs",
+                    "label": "maximum allowed mappings for a read",
+                    "max": 100,
+                    "min": 1,
+                    "numericType": "Integer",
+                    "required": false,
+                    "size": 50,
+                    "value": 1
+                },
+                {
+                    "$type": "TextBox",
+                    "id": "adapter-seq",
+                    "label": "Adapter sequences",
+                    "required": false,
+                    "requiredMessage": "Please enter name for your app session.",
+                    "size": 300,
+                    "value": ""
+                }
+            ],
+            "id": "mapping",
+            "isCollapsible": true,
+            "isOpen": false,
+            "label": "Options for mapping reads"
+        },
+        {
+            "$type": "SectionBreak"
+        },
+        {
+            "$type": "FieldSet",
+            "fields": [
+                {
+                    "$type": "Numeric",
+                    "id": "max-read-length",
+                    "label": "max read length in input file",
+                    "max": 10000,
+                    "min": 20,
+                    "numericType": "Integer",
+                    "required": false,
+                    "size": 50,
+                    "value": 10000
+                },
+                {
+                    "$type": "RadioButton",
+                    "choices": [
+                        {
+                            "value": 1
+                        }
+                    ],
+                    "id": "non-CpG",
+                    "label": "Process non-CpG sites:",
+                    "togglers": [
+                        {
+                            "toggleFields": "non-CpG",
+                            "toggleOnValue": 1
+                        }
+                    ]
+                }
+            ],
+            "id": "mapping",
+            "isCollapsible": true,
+            "isOpen": false,
+            "label": "Options for estimating methylation level, coverage and conversion rate"
+        },
+        {
+            "$type": "SectionBreak"
+        },
+        {
+            "$type": "FieldSet",
+            "fields": [
+                {
+                    "$type": "Numeric",
+                    "id": "num-iter",
+                    "label": "Number of iterations when training model",
+                    "max": 100,
+                    "min": 0,
+                    "numericType": "Integer",
+                    "required": false,
+                    "size": 50,
+                    "value": 15
+                },
+                {
+                    "$type": "Numeric",
+                    "id": "desert-size",
+                    "label": "Max distance between CpGs with reads in HMR",
+                    "max": 20000,
+                    "min": 5000,
+                    "numericType": "Integer",
+                    "required": false,
+                    "size": 50,
+                    "value": 10000
+                },
+                {
+                    "$type": "RadioButton",
+                    "choices": [
+                        {
+                            "value": 1
+                        }
+                    ],
+                    "id": "do-pmd",
+                    "label": "Identify PMRs instead of HMRs:",
+                    "required": false,
+                    "togglers": [
+                        {
+                            "toggleFields": "do-pmd",
+                            "toggleOnValue": 1
+                        }
+                    ]
+                }
+            ],
+            "id": "hmr-op",
+            "isCollapsible": true,
+            "isOpen": false,
+            "label": "Options for identifying hypo-methylated regions"
+        },
+        {
+            "$type": "SectionBreak"
+        },
+        {
+            "$type": "FieldSet",
+            "fields": [
+                {
+                    "$type": "RadioButton",
+                    "choices": [
+                        {
+                            "value": 1
+                        }
+                    ],
+                    "id": "amr-enable",
+                    "label": "Call AMR identification program (disabled by default)",
+                    "required": false,
+                    "togglers": [
+                        {
+                            "toggleFields": "amr-enable",
+                            "toggleOnValue": 1
+                        }
+                    ]
+                },
+                {
+                    "$type": "Numeric",
+                    "id": "amr-num-iter",
+                    "label": "Number of iterations for EM during AMR identification",
+                    "max": 100,
+                    "min": 10,
+                    "numericType": "Integer",
+                    "required": false,
+                    "size": 50,
+                    "value": 15
+                },
+                {
+                    "$type": "Numeric",
+                    "id": "amr-sliding-win-size",
+                    "label": "Sliding window size",
+                    "max": 1000,
+                    "min": 100,
+                    "numericType": "Integer",
+                    "required": false,
+                    "size": 50,
+                    "value": 200
+                },
+                {
+                    "$type": "Numeric",
+                    "id": "amr-min-coverage",
+                    "label": "Min coverage per CpG",
+                    "max": 1000,
+                    "min": 5,
+                    "numericType": "FloatingPoint",
+                    "required": false,
+                    "size": 50,
+                    "value": 5
+                },
+                {
+                    "$type": "Numeric",
+                    "id": "amr-allowed-gap",
+                    "label": "Min allowed gaps between AMRs when merging (in bp)",
+                    "max": 500,
+                    "min": 0,
+                    "numericType": "Integer",
+                    "required": false,
+                    "size": 50,
+                    "value": 200
+                },
+                {
+                    "$type": "Numeric",
+                    "id": "amr-pval-cutoff",
+                    "label": "P-value cutoff",
+                    "max": 0.1,
+                    "min": 0,
+                    "numericType": "FloatingPoint",
+                    "required": false,
+                    "size": 50,
+                    "value": 0.01
+                },
+                {
+                    "$type": "RadioButton",
+                    "choices": [
+                        {
+                            "value": 1
+                        }
+                    ],
+                    "id": "amr-BH-adjust",
+                    "label": "Use Benjaminin-Hochberg adjustment",
+                    "required": false,
+                    "togglers": [
+                        {
+                            "toggleFields": "amr-BH-adjustment",
+                            "toggleOnValue": 1
+                        }
+                    ]
+                },
+                {
+                    "$type": "RadioButton",
+                    "choices": [
+                        {
+                            "value": 1
+                        }
+                    ],
+                    "id": "amr-use-BIC",
+                    "label": "Use BIC to compare models",
+                    "required": false,
+                    "togglers": [
+                        {
+                            "toggleFields": "amr-use-BIC",
+                            "toggleOnValue": 1
+                        }
+                    ]
+                }
+            ],
+            "id": "amr-op",
+            "isCollapsible": true,
+            "isOpen": false,
+            "label": "Options for identifying allelic methylated regions"
+        }
     ],
-    "rulesets":[
+    "rulesets": [
         {
             "$type": "PermissionValidationRule",
-            "permissions": "Read",
-            "severity": "Error",
+            "id": "sample-reader",
             "message": "You do not have read access to the selected sample",
-            "id": "sample-reader"
+            "permissions": "Read",
+            "severity": "Error"
         },
         {
             "$type": "PermissionValidationRule",
-            "permissions": "Own",
-            "severity": "Error",
+            "id": "is-project-owner",
             "message": "You aren't the owner of the selected project.",
-            "id": "is-project-owner"
+            "permissions": "Own",
+            "severity": "Error"
         }
     ]
 }
