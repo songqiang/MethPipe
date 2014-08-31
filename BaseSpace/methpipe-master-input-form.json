@@ -39,17 +39,25 @@
             "valueType": "Input"
         },
         {
-            "$type": "FileChooser",
-            "allowedPermissions": "read",
-            "chooserType": "ByProject",
-            "extensionFilters": ".fa",
-            "id": "genome-file",
-            "label": "Reference genome sequence file",
-            "multiselect": true,
-            "required": true,
-            "requiredMessage": "Please choose reference genome sequence file",
-            "size": 400,
-            "valueType": "Input"
+        "$type": "Select",
+         "id": "genome-id",
+         "label": "Reference Genome",
+         "choices": [ 
+          { 
+              "value": "Human",
+              "text": "Human (UCSC hg19)",
+              "selected": "true"
+          },
+          { 
+              "value": "Mouse",
+              "text": "Mouse (UCSC mm10)",
+              "selected": "false"
+          },
+          { 
+              "value": "Rat",
+              "text": "Rat (UCSC rn5)",
+              "selected": "false"
+          }  ]
         },
         {
             "$type": "SectionBreak"
