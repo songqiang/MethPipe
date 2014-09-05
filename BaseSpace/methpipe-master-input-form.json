@@ -44,17 +44,17 @@
          "label": "Reference Genome",
          "choices": [ 
           { 
-              "value": "Human",
+              "value": "hg19",
               "text": "Human (UCSC hg19)",
               "selected": "true"
           },
           { 
-              "value": "Mouse",
+              "value": "mm10",
               "text": "Mouse (UCSC mm10)",
               "selected": "false"
           },
           { 
-              "value": "Rat",
+              "value": "rn5",
               "text": "Rat (UCSC rn5)",
               "selected": "false"
           }  ]
